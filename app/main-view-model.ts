@@ -1,11 +1,12 @@
-import { Observable, Page } from '@nativescript/core';
-import { getCurrentLocation } from '@nativescript/geolocation';
-import { RoutingService } from './services/routing.service';
-import { TransitRoute, Location } from './models/route';
+import { Observable } from '@nativescript/core';
+import { Frame } from '@nativescript/core';
+import { LocationService } from './services/location.service';
+import { SettingsService } from './services/settings.service';
+import { SearchResult, Location } from './models/settings';
 
 export class MainViewModel extends Observable {
-  private routingService: RoutingService;
-  private _routes: TransitRoute[] = [];
+  private locationService: LocationService;
+  private settingsService: SettingsService;
   private _startLocation: string = '';
   private _endLocation: string = '';
   private _mapUrl: string;
@@ -17,13 +18,8 @@ export class MainViewModel extends Observable {
 
   constructor() {
     super();
-    this.routingService = new RoutingService();
-    
-    this.routingService.getRouteUpdates().subscribe(routes => {
-      this._routes = routes;
-      this.notifyPropertyChange('routes', routes);
-    });
-
+    this.locationService = new LocationService();
+    this.settingsService = new SettingsService();
     this.updateMapUrl();
   }
 
@@ -65,10 +61,6 @@ export class MainViewModel extends Observable {
     return this._mapUrl;
   }
 
-  get routes(): TransitRoute[] {
-    return this._routes;
-  }
-
   get startLocation(): string {
     return this._startLocation;
   }
@@ -91,6 +83,13 @@ export class MainViewModel extends Observable {
     }
   }
 
+  showLocationSearch() {
+    Frame.topmost().navigate({
+      moduleName: 'pages/search-page',
+      animated: true
+    });
+  }
+
   async setCurrentLocation() {
     try {
       const location = await getCurrentLocation({
@@ -109,8 +108,17 @@ export class MainViewModel extends Observable {
     }
   }
 
+  filterByType(args) {
+    const button = args.object;
+    const filterType = button.text;
+    console.log('Filter by:', filterType);
+  }
+
   navigateToSearch() {
-    console.log('Navigate to search');
+    Frame.topmost().navigate({
+      moduleName: 'pages/search-page',
+      animated: true
+    });
   }
 
   navigateToRoutes() {
@@ -125,29 +133,10 @@ export class MainViewModel extends Observable {
     console.log('Navigate to profile');
   }
 
-  showDestinationSearch() {
-    console.log('Show destination search');
-  }
-
   openSettings() {
-    console.log('Open settings');
-  }
-
-  async findRoutes() {
-    const start: Location = {
-      latitude: this._currentLocation.latitude,
-      longitude: this._currentLocation.longitude,
-      address: this.startLocation
-    };
-
-    const end: Location = {
-      latitude: 0,
-      longitude: 0,
-      address: this.endLocation
-    };
-
-    const routes = await this.routingService.findRoutes(start, end);
-    this._routes = routes;
-    this.notifyPropertyChange('routes', routes);
+    Frame.topmost().navigate({
+      moduleName: 'pages/settings-page',
+      animated: true
+    });
   }
 }

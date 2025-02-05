@@ -1,0 +1,71 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo">
+  <ActionBar title="{{ 'search.title' | L }}" flat="true">
+    <NavigationButton text="Back" android.systemIcon="ic_menu_back" tap="onBackTap"/>
+  </ActionBar>
+
+  <GridLayout rows="auto, *">
+    <!-- Search Bar -->
+    <GridLayout row="0" columns="auto, *, auto" class="p-2 bg-white">
+      <Label col="0" text="&#xf3c5;" class="fas text-lg p-2" />
+      <TextField col="1" 
+                hint="{{ 'search.placeholder' | L }}" 
+                text="{{ searchQuery }}" 
+                returnKeyType="search"
+                returnPress="onSearch"
+                class="input" />
+      <Label col="2" text="&#xf130;" class="fas text-lg p-2" tap="onVoiceSearch" />
+    </GridLayout>
+
+    <!-- Results -->
+    <GridLayout row="1" rows="auto, auto, *">
+      <!-- Saved Locations -->
+      <StackLayout row="0" class="p-2" visibility="{{ showSavedLocations ? 'visible' : 'collapsed' }}">
+        <Label text="{{ 'search.savedLocations' | L }}" class="text-lg font-bold p-2"/>
+        <ListView items="{{ savedLocations }}" class="list-group">
+          <ListView.itemTemplate>
+            <GridLayout columns="auto, *, auto" class="list-group-item">
+              <Label col="0" text="{{ icon }}" class="fas text-lg"/>
+              <StackLayout col="1" class="p-2">
+                <Label text="{{ name }}" class="font-semibold"/>
+                <Label text="{{ address }}" class="text-sm text-gray-600" textWrap="true"/>
+              </StackLayout>
+              <Label col="2" text="&#xf054;" class="fas"/>
+            </GridLayout>
+          </ListView.itemTemplate>
+        </ListView>
+      </StackLayout>
+
+      <!-- Recent Searches -->
+      <StackLayout row="1" class="p-2" visibility="{{ showRecent ? 'visible' : 'collapsed' }}">
+        <Label text="{{ 'search.recentSearches' | L }}" class="text-lg font-bold p-2"/>
+        <ListView items="{{ recentSearches }}" class="list-group">
+          <ListView.itemTemplate>
+            <GridLayout columns="auto, *, auto" class="list-group-item">
+              <Label col="0" text="&#xf017;" class="fas"/>
+              <Label col="1" text="{{ query }}" class="p-2"/>
+              <Label col="2" text="&#xf054;" class="fas"/>
+            </GridLayout>
+          </ListView.itemTemplate>
+        </ListView>
+      </StackLayout>
+
+      <!-- Search Results -->
+      <ListView row="2" items="{{ searchResults }}" class="list-group">
+        <ListView.itemTemplate>
+          <GridLayout columns="auto, *, auto" class="list-group-item p-2">
+            <Label col="0" text="{{ icon || '&#xf3c5;' }}" class="fas"/>
+            <StackLayout col="1" class="p-2">
+              <Label text="{{ name }}" class="font-semibold"/>
+              <Label text="{{ address }}" class="text-sm text-gray-600" textWrap="true"/>
+              <Label text="{{ openingHours }}" class="text-sm text-green-600" visibility="{{ openingHours ? 'visible' : 'collapsed' }}"/>
+            </StackLayout>
+            <StackLayout col="2" orientation="horizontal">
+              <Label text="{{ distance + ' km' }}" class="text-sm text-gray-600" visibility="{{ distance ? 'visible' : 'collapsed' }}"/>
+              <Label text="&#xf054;" class="fas ml-2"/>
+            </StackLayout>
+          </GridLayout>
+        </ListView.itemTemplate>
+      </ListView>
+    </GridLayout>
+  </GridLayout>
+</Page>

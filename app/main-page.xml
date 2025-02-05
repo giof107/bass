@@ -1,7 +1,7 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
-    <ActionBar title="Transit Navigator" flat="true">
-        <ActionItem ios.position="right" android.position="actionBar">
-            <Label text="&#xf013;" class="fas text-lg" tap="{{ openSettings }}" />
+    <ActionBar title="{{ 'app.title' | L }}" flat="true">
+        <ActionItem ios.position="right" android.position="actionBar" tap="{{ openSettings }}">
+            <Label text="&#xf013;" class="fas text-lg" />
         </ActionItem>
     </ActionBar>
     
@@ -13,30 +13,50 @@
         <StackLayout row="0" verticalAlignment="top" class="m-2">
             <GridLayout rows="auto, auto" columns="*" class="bg-white rounded-lg shadow-md p-4">
                 <GridLayout row="0" columns="*, auto" class="mb-2">
-                    <TextField col="0" hint="Start location" text="{{ startLocation }}" class="input" />
+                    <TextField col="0" 
+                             hint="{{ 'search.startLocation' | L }}" 
+                             text="{{ startLocation }}" 
+                             class="input" 
+                             tap="{{ showLocationSearch }}"
+                             editable="false" />
                     <Button col="1" text="📍" tap="{{ setCurrentLocation }}" class="w-10" />
                 </GridLayout>
-                <TextField row="1" hint="Where to?" text="{{ endLocation }}" class="input" tap="{{ showDestinationSearch }}" />
+                <TextField row="1" 
+                          hint="{{ 'search.destination' | L }}" 
+                          text="{{ endLocation }}" 
+                          class="input"
+                          tap="{{ showLocationSearch }}"
+                          editable="false" />
             </GridLayout>
         </StackLayout>
+
+        <!-- Quick Filters -->
+        <ScrollView row="0" verticalAlignment="top" marginTop="120">
+            <StackLayout orientation="horizontal" class="p-2">
+                <Button text="{{ 'filters.restaurants' | L }}" class="m-1 p-2 bg-white rounded-full" tap="{{ filterByType }}" />
+                <Button text="{{ 'filters.cafes' | L }}" class="m-1 p-2 bg-white rounded-full" tap="{{ filterByType }}" />
+                <Button text="{{ 'filters.markets' | L }}" class="m-1 p-2 bg-white rounded-full" tap="{{ filterByType }}" />
+                <Button text="{{ 'filters.gas' | L }}" class="m-1 p-2 bg-white rounded-full" tap="{{ filterByType }}" />
+            </StackLayout>
+        </ScrollView>
 
         <!-- Bottom Navigation -->
         <GridLayout row="1" columns="*, *, *, *" class="bg-white p-4 shadow-lg">
             <StackLayout col="0" tap="{{ navigateToSearch }}" class="text-center">
                 <Label text="&#xf002;" class="fas text-xl" />
-                <Label text="Search" class="text-xs" />
+                <Label text="{{ 'nav.search' | L }}" class="text-xs" />
             </StackLayout>
             <StackLayout col="1" tap="{{ navigateToRoutes }}" class="text-center">
                 <Label text="&#xf5eb;" class="fas text-xl" />
-                <Label text="Routes" class="text-xs" />
+                <Label text="{{ 'nav.routes' | L }}" class="text-xs" />
             </StackLayout>
             <StackLayout col="2" tap="{{ navigateToFavorites }}" class="text-center">
                 <Label text="&#xf005;" class="fas text-xl" />
-                <Label text="Favorites" class="text-xs" />
+                <Label text="{{ 'nav.favorites' | L }}" class="text-xs" />
             </StackLayout>
             <StackLayout col="3" tap="{{ navigateToProfile }}" class="text-center">
                 <Label text="&#xf007;" class="fas text-xl" />
-                <Label text="Profile" class="text-xs" />
+                <Label text="{{ 'nav.profile' | L }}" class="text-xs" />
             </StackLayout>
         </GridLayout>
     </GridLayout>
