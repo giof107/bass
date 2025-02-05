@@ -1,0 +1,43 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+    <ActionBar title="Transit Navigator" flat="true">
+        <ActionItem ios.position="right" android.position="actionBar">
+            <Label text="&#xf013;" class="fas text-lg" tap="{{ openSettings }}" />
+        </ActionItem>
+    </ActionBar>
+    
+    <GridLayout rows="*, auto">
+        <!-- Map View -->
+        <WebView row="0" src="{{ mapUrl }}" id="mapView" />
+
+        <!-- Search Panel -->
+        <StackLayout row="0" verticalAlignment="top" class="m-2">
+            <GridLayout rows="auto, auto" columns="*" class="bg-white rounded-lg shadow-md p-4">
+                <GridLayout row="0" columns="*, auto" class="mb-2">
+                    <TextField col="0" hint="Start location" text="{{ startLocation }}" class="input" />
+                    <Button col="1" text="📍" tap="{{ setCurrentLocation }}" class="w-10" />
+                </GridLayout>
+                <TextField row="1" hint="Where to?" text="{{ endLocation }}" class="input" tap="{{ showDestinationSearch }}" />
+            </GridLayout>
+        </StackLayout>
+
+        <!-- Bottom Navigation -->
+        <GridLayout row="1" columns="*, *, *, *" class="bg-white p-4 shadow-lg">
+            <StackLayout col="0" tap="{{ navigateToSearch }}" class="text-center">
+                <Label text="&#xf002;" class="fas text-xl" />
+                <Label text="Search" class="text-xs" />
+            </StackLayout>
+            <StackLayout col="1" tap="{{ navigateToRoutes }}" class="text-center">
+                <Label text="&#xf5eb;" class="fas text-xl" />
+                <Label text="Routes" class="text-xs" />
+            </StackLayout>
+            <StackLayout col="2" tap="{{ navigateToFavorites }}" class="text-center">
+                <Label text="&#xf005;" class="fas text-xl" />
+                <Label text="Favorites" class="text-xs" />
+            </StackLayout>
+            <StackLayout col="3" tap="{{ navigateToProfile }}" class="text-center">
+                <Label text="&#xf007;" class="fas text-xl" />
+                <Label text="Profile" class="text-xs" />
+            </StackLayout>
+        </GridLayout>
+    </GridLayout>
+</Page>
